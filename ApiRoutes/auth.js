@@ -2,9 +2,10 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Auth = require("../models/Auth.js");
+require("dotenv").config();
 
 const router = express.Router();
-const key = "my-secret-key";
+const key = process.env.SECRET;
 
 // 註冊
 router.post("/register", async (req, res, next) => {
