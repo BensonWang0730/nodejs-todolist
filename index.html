@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="btn">google 登入</button>
+    <button class="test">test</button>
+    <form action="http://localhost:8080/api/v1/oauth/login" method="post">
+      <input type="submit" value="Press to log in" />
+    </form>
+  </body>
+  <script>
+    const btn = document.querySelector(".btn");
+    const test = document.querySelector(".test");
+    const login = () => {
+      const url = "http://localhost:8080/api/v1/oauth/login";
+      fetch(url, { method: "POST" })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    btn.addEventListener("click", login);
+    test.addEventListener("click", () => {
+      const requestBody = {
+        account: "benson@gmail.com",
+        password: "A123",
+      };
+      fetch("http://localhost:8080/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  </script>
+</html>

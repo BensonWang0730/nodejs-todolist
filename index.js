@@ -1,6 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./db.js");
 const authApiRoute = require("./ApiRoutes/auth.js");
+const oauthApiRoute = require("./ApiRoutes/oauth.js");
 const todosApiRoute = require("./ApiRoutes/todolist.js");
 
 const app = express();
@@ -11,8 +13,10 @@ app.listen(PORT, async () => {
   console.log(`http://localhost:${PORT}`);
 });
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1/auth", authApiRoute);
+app.use("/api/v1/oauth", oauthApiRoute);
 app.use("/api/v1/todos", todosApiRoute);
 
 app.use((error, req, res, next) => {

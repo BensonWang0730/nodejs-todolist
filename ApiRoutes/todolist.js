@@ -4,7 +4,7 @@ const Todo = require("../models/Todolist.js");
 require("dotenv").config();
 
 const router = express.Router();
-const key = process.env.SECRET;
+const key = process.env.JWT_SECRET;
 
 const checkAuth = (req, res) => {
   const token = req.headers["authorization"];

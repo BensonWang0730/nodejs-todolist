@@ -5,7 +5,7 @@ const Auth = require("../models/Auth.js");
 require("dotenv").config();
 
 const router = express.Router();
-const key = process.env.SECRET;
+const key = process.env.JWT_SECRET;
 
 // 註冊
 router.post("/register", async (req, res, next) => {
@@ -60,8 +60,6 @@ router.post("/login", async (req, res, next) => {
 
     // JWT 簽章
     const token = jwt.sign({ account, username: Auth.username }, key);
-    console.log(token);
-
     res.status(200).json({ message: "登入成功", token });
   } catch (error) {
     next(error);
