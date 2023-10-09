@@ -29,7 +29,7 @@ router.post("/login", (req, res) => {
   res.redirect(authorizeUrl); // 重定向至 Google 授權頁面
 });
 
-// 回傳路由，解析回傳的 token
+// 回傳路由
 router.get("/callback", async (req, res) => {
   const { code } = req.query;
 
@@ -43,9 +43,39 @@ router.get("/callback", async (req, res) => {
       url: "https://www.googleapis.com/oauth2/v3/userinfo",
     });
 
+    // 創建 JWT
     const token = jwt.sign(userInfo.data, JWT_SECRET);
+    // 將 JWT 儲存在 Cookie，前端可從 Cookie 中讀取值
     res.cookie("token", token);
-    res.redirect("/");
+    res.redirect("/"); // 跳轉回前端頁面
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 驗證 JWT
+function authenticateJWT(req, res, next) {
+  const token = req.header("Authorization");
+
+  if (token) {
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+}
+
+router.get("/user", authenticateJWT, async (req, res) => {
+  try {
+    const userInfo = await client.request({
+      url: "https://www.googleapis.com/oauth2/v3/userinfo",
+    });
+    res.json(userInfo.data); // 回傳用戶資訊
   } catch (error) {
     next(error);
   }
