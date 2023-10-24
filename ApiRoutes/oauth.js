@@ -10,10 +10,8 @@ const { GOOGLE_CLIENT_ID, GOOGLE_SECRET_KEY, JWT_SECRET, HOST } = process.env;
 const client = new OAuth2Client({
   clientId: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_SECRET_KEY,
-  redirectUri: "http://127.0.0.1:5173/", // google develooer console 設定的要一樣
-  // `${
-  //   process.env.Port || "http://localhost:8080"
-  // } /api/v1/oauth/callback`,
+  redirectUri:
+    "https://nodejs-todolist-flrc.onrender.com/api/v1/oauth/callback", // google develooer console 設定的要一樣
 });
 
 // 授權路由
